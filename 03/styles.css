@@ -1,0 +1,222 @@
+body {
+    margin: 0px;
+    font-family: Tahoma;
+    font-size: 11pt;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+div {
+    background-color: rgba(128, 64, 64, 0.0);
+}
+
+header {
+    max-width: 1152px;
+    padding: 0px;
+    margin: 15px auto 0 auto;
+    min-height: 100px;
+}
+
+#social {
+    float: left;
+    width: 250px;
+    height: 100px;
+}
+
+#social p {
+    margin: 10px;
+    font-size: 8pt;
+}
+
+#account {
+    float: right;
+    width: 250px;
+    height: 100px;
+    margin: 0px;
+    background-color: rgba(0, 0, 128, 0.0);
+}
+
+#account p {
+    float: right;
+    margin: 10px;
+    font-size: 8pt;
+}
+
+#account input {
+    float: right;
+    margin: 10px;
+    width: 200px;
+    height: 25px;
+}
+
+#logo {
+    font-family: 'Graduate', 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 60pt;
+    overflow: hidden;
+    margin: 0 auto;
+    min-width: 250px;
+    height: 100px;
+    background-color: rgba(0, 0, 192, 0.0);
+    text-align: center;
+}
+
+header:after {    
+    clear: both;
+}
+
+/**/
+
+nav {
+    max-width: 1152px;
+    margin: 25px auto 25px auto;
+    padding: 5px 0px 5px 0px;
+    background-color: rgba(128, 128, 192, 0.0);
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+nav #menu {
+    display: flex;
+    justify-content: center;
+}
+
+#menu .item {
+    margin: 5px;
+    text-transform: uppercase;
+}
+
+#menu .item a:link, a:visited {
+    color: rgba(0, 0, 0, 0.75);
+    text-decoration: none;
+}
+
+#menu .item a:hover {    
+    color: rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+}
+
+nav #menu:after {
+    clear: both;
+}
+
+nav #suggestions {
+    display: flex;
+    justify-content: center;
+}
+
+#suggestions .suggestion {
+    float: left;
+    margin: 5px;
+}
+
+#suggestions .suggestion:after {    
+    clear: both;
+}
+
+#nav:after {
+    clear: both;
+}
+
+/**/
+
+#main_row {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0px;
+    display: flex;
+}
+
+#left_nav {
+    flex-basis: 275px;
+    height: 750px;
+    background-color: rgba(64, 0, 128, 0.0);
+    margin: 0px;
+}
+
+#left_nav a:link, a:visited, a:active { 
+    text-decoration: none;
+}
+
+#left_nav a:hover { 
+    color: rgba(128, 128, 128, 0.5);
+}
+
+aside {
+    flex-basis: 500px;
+    background-color: rgba(192, 0, 64, 0.0);
+    margin: 0px;
+}
+
+#shop, #newsletter, #to_go {
+    margin: 0px;
+    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    font-size: 10pt;
+}
+
+#shop {
+    height: 300px;
+}
+
+
+#newsletter {
+    height: 200px;
+}
+
+
+#to_go {
+    height: 500px;
+}
+
+main {
+    flex: 1 100%;
+    height: 1250px;
+    background-color: rgba(32, 32, 64, 0.0);
+    margin: 0px;
+    overflow: hidden;
+}
+
+main img {
+    width: 650px;
+}
+
+#main_row:after {
+    clear: both;
+}
+
+/**/
+
+footer {
+    margin: 0px;
+    position: relative;
+    bottom: 0px;
+    min-width: 100%;
+    height: 360px;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+footer #footer_box {
+    margin: 10px auto;
+    padding: 5px;
+    max-width: 1152px;
+    min-height: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75);
+}
+
+footer p {
+    font-size: 10pt;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 5px;
+    text-align: center;
+}
+
+footer p a:link {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+}
+
+footer p a:hover {    
+    color: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+}

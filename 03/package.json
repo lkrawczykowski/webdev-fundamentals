@@ -1,0 +1,10 @@
+{
+    "name": "webdev-fundamentals-03",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "live-server --port=8081"
+    },
+    "devDependencies": {
+        "live-server": "1.1.0"
+    }
+}
