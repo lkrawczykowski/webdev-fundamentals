@@ -1,0 +1,36 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#player-indicator {
+    font-size: 14pt;
+}
+
+#game-wrapper {
+    font-family: Graduate;
+    font-size: 24pt;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-wrapper > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#game-wrapper > div > div {
+    margin: 25px;
+}
+
