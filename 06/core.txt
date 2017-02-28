@@ -1,0 +1,20 @@
+
+enum Expectation
+    OPERATOR
+    OPERAND
+
+
+class Stack
+    private expectation: Expectation
+
+regular: 5 + ((1 + 2) × 4) − 3
+
+rpn: 5 1 2 + 4 * + 3 −
+
+5 1 2 + 4 × + 3 −
+
+5 1 2 + 4 × +
+
+1 2 + 4 ×
+
+1 2 +
