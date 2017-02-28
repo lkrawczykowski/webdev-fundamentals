@@ -1,7 +1,7 @@
 {
-  "name": "webpack-css-example",
-  "version": "3.0.0",
-  "description": "Example repo showing a webpack CSS build",
+  "name": "05",
+  "version": "1.0.0",
+  "description": "webdev fundamentals",
   "main": "src/index.js",
   "engines": {
     "node": "4.1.2",
@@ -18,16 +18,8 @@
       "react"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bensmithett/webpack-css-example.git"
-  },
   "author": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bensmithett/webpack-css-example/issues"
-  },
-  "homepage": "https://github.com/bensmithett/webpack-css-example",
   "dependencies": {
     "autoprefixer": "^6.3.6",
     "babel-core": "^6.9.0",
