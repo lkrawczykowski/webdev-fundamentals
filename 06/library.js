@@ -1,5 +1,7 @@
 module.exports = {
-    evaluate_rpn: function (expression_string, verbose = false) {
+    evaluate_rpn: function (expression_string, extra_operators = "", verbose = false) {
+
+        expression_string = expression_string + " " + extra_operators;
 
         var splitted = expression_string.split(" ");
         var filtered = filter_not_empty_string(splitted);
@@ -18,6 +20,8 @@ module.exports = {
                     stack.push(a - b);
                 else if (input === "*")
                     stack.push(a * b);
+                else if (input === "%")
+                    stack.push(a % b);
                 else
                     throw new Error("unknown symbol " + input);
             }
@@ -32,6 +36,8 @@ module.exports = {
 
         if (stack.length !== 1)
             throw new Error("evaluation failed");
+
+        console.log(stack[0]);
 
         return stack[0];
     }
