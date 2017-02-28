@@ -8,10 +8,8 @@
     "npm": "3.3.9"
   },
   "scripts": {
-    "start": "live-server --port=8082",
+    "start": "webpack-dev-server --port=8082",
     "build": "webpack",
-    "start:live": "webpack-dev-server --port=8082",
-    "start2": "live",
     "lint": "standard",
     "test": "standard && webpack --bail"
   },
@@ -42,7 +40,6 @@
   "devDependencies": {
     "standard": "^8.2.0",
     "webpack": "^1.14.0",
-    "webpack-dev-server": "1.9.0",
-    "live-server": "1.1.0"
+    "webpack-dev-server": "1.9.0"
   }
 }
