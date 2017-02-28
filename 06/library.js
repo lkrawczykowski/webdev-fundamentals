@@ -1,11 +1,9 @@
 module.exports = {
     evaluate_rpn: function (expression_string, extra_operators = "", verbose = false) {
-
+        
         expression_string = expression_string + " " + extra_operators;
-
         var splitted = expression_string.split(" ");
         var filtered = filter_not_empty_string(splitted);
-
         var stack = [];
 
         for (var i = 0; i < filtered.length; i++) {
@@ -37,8 +35,6 @@ module.exports = {
         if (stack.length !== 1)
             throw new Error("evaluation failed");
 
-        console.log(stack[0]);
-
         return stack[0];
     }
 }
@@ -57,11 +53,4 @@ function filter(a1, f1) {
         if (f1(a1[i]))
             a2.push(a1[i]);
     return a2;
-}
-
-function some(a1, f1) {
-    for (var i = 0; i < a1.length; i++)
-        if (f1(a1[i]))
-            return true;
-    return false;
 }
