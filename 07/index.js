@@ -1,5 +1,3 @@
-console.log("index.js");
-
 window.onload = function () {
 
     var m = model();
@@ -7,7 +5,6 @@ window.onload = function () {
     var c = controller(m, v);
 
     document.addEventListener("keydown", function (e) {
-        c.any_key();
         //console.log(e);
         if (e.code === "ArrowUp")
             c.move_cursor(0, -1);
@@ -19,6 +16,7 @@ window.onload = function () {
             c.move_cursor(1, 0);
         else if (e.code === "Space")
             c.confirm_move();
+        c.any_key();
     });
 }
 
@@ -33,15 +31,15 @@ function model() {
 function view() {
     return {
         update_field: function (field, cursor) {
-            console.log("update_field");
+            //console.log("update_field");
             var all_fields = document.querySelectorAll("#game-wrapper > div > div");
             for (var i = 0; i < 9; i++)
                 all_fields[i].innerHTML = ["-", "O", "X"][field[i]];
             var index = 3 * cursor[1] + cursor[0];
-            document.querySelectorAll("#game-wrapper > div > div")[index].innerHTML = "[ ]";
+            document.querySelectorAll("#game-wrapper > div > div")[index].innerHTML = "[" + ["-", "O", "X"][field[index]] + "]";
         },
-        update_header: function (player) {
-            document.querySelector("#player-indicator").innerHTML = "Player " + player + " moves";
+        update_header: function (header_text) {
+            document.querySelector("#player-indicator").innerHTML = header_text;
         }
     }
 }
@@ -51,7 +49,7 @@ function controller(model, view) {
         model: model,
         view: view,
         move_cursor: function (x, y) {
-            if (model.state != 2) {
+            if (model.state === 0 || model.state === 1) {
                 model.cursor[0] += x;
                 if (model.cursor[0] < 0)
                     model.cursor[0] += 3;
@@ -78,23 +76,40 @@ function controller(model, view) {
 
 
                     //check if someone won
-                    if (true) {
+                    if (false) {
                         model.state = 3; //finished
                         console.log("finished");
+                        view.update_field(model.field, model.cursor);
                     } else {
                         //chenge state
                         var pending_state = model.state === 0 ? 1 : 0;
                         var pending_value = model.state === 0 ? 1 : 2;
                         model.state = 2;
-                        console.log(model.field);
                         setTimeout(function () {
-                            console.log("1000 ms");
+                            console.log("300 ms");
                             model.field[index] = pending_value;
                             model.state = pending_state;
                             console.log(model.field);
+
+                            var result = game_result(model.field);
+                            if (result === 1) {
+                                model.state = 3;
+                                view.update_header("Player O won!");
+                                //O won
+                            } else if (result === 2) {
+                                model.state = 3;
+                                view.update_header("Player X won!");
+                                //X won
+                            } else if (!some(model.field, empty)) {
+                                //no line, field full, draw
+                                model.state = 3;
+                                view.update_header("Draw");
+                            } else {
+                                view.update_header("Player " + (pending_state === 0 ? "O" : "X") + " moves");
+                            }
+
                             view.update_field(model.field, model.cursor);
-                            view.update_header(pending_state === 0 ? "O" : "X");
-                        }, 1000);
+                        }, 300);
                     }
                 }
                 else {
@@ -110,16 +125,56 @@ function controller(model, view) {
                 state: 0
             };
             view.update_field(model.field, model.cursor);
-            view.update_header("O");
+            view.update_header("Player " + (model.state === 0 ? "O" : "X") + " starts game");
         },
         any_key: function () {
-            console.log("any_key");
+            //console.log("any_key");
             if (model.state === 3)
                 controller.reset();
         }
     }
     controller.reset();
     return controller;
+}
+
+function empty(v) {
+    return v === 0;
+}
+
+function some(a1, f1) {
+    for (var i = 0; i < a1.length; i++)
+        if (f1(a1[i]))
+            return true;
+    return false;
+}
+
+function game_result(field) {
+
+    var possible_lines = [
+        [1, 0, 0, 1, 0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 1, 0, 0, 1],
+        [1, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1],
+        [1, 0, 0, 0, 1, 0, 0, 0, 1],
+        [0, 0, 1, 0, 1, 0, 1, 0, 0],
+    ];
+
+    for (var i = 0; i < possible_lines.length; i++) {
+        if (is_complete(possible_lines[i], field, 1))
+            return 1;
+        else if (is_complete(possible_lines[i], field, 2))
+            return 2;
+    }
+    return 0;
+}
+
+function is_complete(line_mask, line, player) {
+    for (var i = 0; i < line_mask.length; i++)
+        if (line_mask[i] === 1 && line[i] !== player)
+            return false;
+    return true;
 }
 
 /*
