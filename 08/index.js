@@ -26,8 +26,10 @@ window.onpopstate = function (e) {
 function on_menu_item_click(e) {
     e.preventDefault();
     var url = e.srcElement.getAttribute('href');
-    change_route(url);
-    history.pushState({ url: url }, 'route: ' + url, url);
+    if (url !== history.state.url) {
+        change_route(url);
+        history.pushState({ url: url }, 'route: ' + url, url);
+    }
 }
 
 function change_route(url) {
