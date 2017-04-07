@@ -5,9 +5,21 @@ window.onload = function () {
         .routes([
             { url: '/', templateUrl: 'routes/home.html' },
             { url: '/sign-in', templateUrl: 'routes/sign-in.html' }
-        ]);
-
-    wd.root('app')
-        .navigate('/')
-        .navigate('/sign-in');
+        ])
+        .component("RouterLink", {
+            template: "<a href=\"\"><\/a>",
+            beforeMount: function (app, element, componentData) {
+                //console.log("beforeMount", app, element, componentData);
+                let replacement = document.createElement("a");
+                replacement.href = element.getAttribute("href");
+                replacement.innerHTML = element.innerHTML;
+                replacement.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var url = e.srcElement.getAttribute('href');
+                    app.navigate(url);
+                });
+                element.parentNode.replaceChild(replacement, element);
+            }
+        })
+        .navigate("/");
 }

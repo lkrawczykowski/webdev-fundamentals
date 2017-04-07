@@ -1,16 +1,26 @@
 module.exports = function () {
     let apps = [];
 
+    function renderComponents(app) {
+        app.components.forEach(component => {
+            let tags = document.getElementsByTagName(component.name);
+            for (var i = 0; i < tags.length;) {
+                let componentData = { name: component.name, template: component.descriptor.template };
+                component.descriptor.beforeMount(app, tags[i], componentData);
+            }
+        });
+    }
+
     let app = {
         appRootName: null,
         appRoot: null,
         appRoutes: [],
+        components: [],
         createRoot: function (rootName) {
             let app = this;
             window.onpopstate = function (e) {
                 if (e.state !== null) {
                     var url = e.state.url;
-                    console.log(url);
                     app.navigate(url, false);
                 }
             };
@@ -35,7 +45,7 @@ module.exports = function () {
             return this;
         },
         navigate: function (url, affectsHistory = true) {
-            let appRoot = this.appRoot;
+            let app = this;
             let templateUrl = this.appRoutes.find(x => x.url === url).templateUrl;
             if (templateUrl === undefined)
                 console.error(url + " is not defined");
@@ -45,8 +55,9 @@ module.exports = function () {
                 }).then(function (response) {
                     return response.text();
                 }).then(function (result) {
-                    appRoot.innerHTML = result;
-                    if(affectsHistory)
+                    app.appRoot.innerHTML = result;
+                    renderComponents(app);
+                    if (affectsHistory)
                         history.pushState({ url: url }, 'route: ' + url, url);
                 }).catch(function (error) {
                     console.error(error);
@@ -54,8 +65,9 @@ module.exports = function () {
             }
             return this;
         },
-        component: function () {
-
+        component: function (name, descriptor) {
+            this.components.push({ name: name, descriptor: descriptor });
+            return this;
         }
     };
     return app;
