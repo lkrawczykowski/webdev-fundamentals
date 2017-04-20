@@ -9,7 +9,6 @@ window.onload = function () {
         .component("RouterLink", {
             template: "<a href=\"\"><\/a>",
             beforeMount: function (app, element, componentData) {
-                //console.log("beforeMount", app, element, componentData);
                 let replacement = document.createElement("a");
                 replacement.href = element.getAttribute("href");
                 replacement.innerHTML = element.innerHTML;
@@ -26,12 +25,26 @@ window.onload = function () {
             beforeMount: function (app, element, componentData) {
                 let replacement = document.createElement("input");
                 replacement.placeholder = element.getAttribute("placeholder");
+                replacement.type = "text";
+                replacement.id = "products-search";
                 replacement.class = "awesomeplete";
                 element.parentNode.replaceChild(replacement, element);
-                var autocomplete = new Awesomplete(replacement, { list: ["aaaaaaaaaaaaaa", "bbbbbbbbbbbbbb"] });
-                replacement.oninput = function (e) {
-                    //e.preventDefault();
-                    console.log(e);
+                var autocomplete = new Awesomplete(replacement);
+                replacement.onkeyup = function (e) {
+                    var query = e.srcElement.value;
+                    if (query.length > 2) {
+                        var address = "http://localhost:8082/api/search?query=" + query;
+                        console.log(address);
+                        fetch(address, {
+                            method: 'get'
+                        }).then(function (response) {
+                            return response.text();
+                        }).then(function (result) {
+                            autocomplete.list = JSON.parse(result).suggestions;
+                        }).catch(function (error) {
+                            console.error(error);
+                        });
+                    }
                 }
             }
         })
