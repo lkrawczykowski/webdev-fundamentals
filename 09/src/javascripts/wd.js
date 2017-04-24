@@ -1,33 +1,37 @@
 module.exports = function () {
     let apps = [];
 
-    let app = {
-        appRootName: null,
-        appRoot: null,
-        appRoutes: [],
-        createRoot: function (rootName) {
-            let root = document.querySelector("main[wd-root=" + rootName + "]");
+    let context = {
+        app: null,
+        createRoot: function (name) {
+            let root = document.querySelector("main[wd-root=" + name + "]");
             if (root === null)
-                console.error("root not found: " + rootName);
-            else if (apps.some(x => x.appRootName === rootName))
-                console.error("root already created: " + rootName);
+                console.error("root not found: " + name);
+            else if (apps.some(x => x.name === name))
+                console.error("root already created: " + name);
             else {
-                this.appRootName = rootName;
-                this.appRoot = root;
-                apps.push(this);
+                var app = {};
+                app.name = name;
+                app.root = root;
+                app.routes = [];
+                this.app = app;
+                apps.push(app);
             }
             return this;
         },
-        root: function (rootName) {
-            return apps.find(x => x.appRootName === rootName);
+        root: function (name) {
+            this.app = apps.find(x => x.name === name);
+            if (this.app === undefined)
+                console.error("app " + name + " not found");
+            return this;
         },
         routes: function (routes) {
-            this.appRoutes = routes;
+            this.app.routes = routes;
             return this;
         },
         navigate: function (url) {
-            let appRoot = this.appRoot;
-            let templateUrl = this.appRoutes.find(x => x.url === url).templateUrl;
+            let app = this.app;
+            let templateUrl = app.routes.find(x => x.url === url).templateUrl;
             if (templateUrl === undefined)
                 console.error(url + " is not defined");
             else {
@@ -36,7 +40,7 @@ module.exports = function () {
                 }).then(function (response) {
                     return response.text();
                 }).then(function (result) {
-                    appRoot.innerHTML = result;
+                    app.root.innerHTML = result;
                 }).catch(function (error) {
                     console.error(error);
                 });
@@ -44,5 +48,5 @@ module.exports = function () {
             return this;
         }
     };
-    return app;
+    return context;
 }();

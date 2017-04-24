@@ -1,7 +1,7 @@
 let wd = require('./wd.js');
 
 window.onload = function () {
-    wd.createRoot('app')
+    let a = wd.createRoot('app')
         .routes([
             { url: '/', templateUrl: 'routes/home.html' },
             { url: '/sign-in', templateUrl: 'routes/sign-in.html' }
@@ -13,5 +13,10 @@ window.onload = function () {
         wd.root('app').navigate('/sign-in');
     }, 3000)
 
-    wd.createRoot('appB');
+    let b = wd.createRoot('appB');
+
+    const test = { a: 0 };
+    console.log(test.a);
+    test.a = 1;
+    console.log(test.a);
 }
