@@ -1,6 +1,5 @@
 module.exports = function () {
     let apps = [];
-
     let context = {
         app: null,
         createRoot: function (name) {
@@ -35,15 +34,10 @@ module.exports = function () {
             if (templateUrl === undefined)
                 console.error(url + " is not defined");
             else {
-                fetch(templateUrl, {
-                    method: 'get'
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (result) {
-                    app.root.innerHTML = result;
-                }).catch(function (error) {
-                    console.error(error);
-                });
+                fetch(templateUrl, { method: 'get' })
+                    .then(response => response.text())
+                    .then(result => app.root.innerHTML = result)
+                    .catch(error => console.error(error));
             }
             return this;
         }
