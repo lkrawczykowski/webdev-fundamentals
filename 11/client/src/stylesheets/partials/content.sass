@@ -1,0 +1,45 @@
+@import "../variables/layout.sass"
+
+#content
+    margin-top: $header-height;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+
+#content-panel
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: $default-width;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+#content-panel-menu
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: $content-panel-menu-width;
+
+    height: $content-panel-menu-height;
+
+    background-color: rgba(192, 64, 64, 0.25);
+
+#content-panel-center
+    flex-basis: $content-panel-center-width;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: $content-panel-center-height;
+
+    background-color: rgba(128, 192, 256, 0.25);
+
+#content-panel-ads
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: $content-panel-ads-width;
+
+    height: $content-panel-ads-height;
+
+    background-color: rgba(192, 64, 64, 0.25);
