@@ -1,13 +1,13 @@
 let wd = require('./wd.js');
 
 window.onload = function () {
-    wd.createRoot('app')
+    const application = wd.createRoot('app')
         .routes([
             { url: '/', templateUrl: 'routes/home.html' },
             { url: '/sign-in', templateUrl: 'routes/sign-in.html' }
         ]);
 
-    wd.root('app').navigate('/');
+    application.root('app').navigate('/');
 
     setTimeout(() => {
         wd.root('app').navigate('/sign-in');
