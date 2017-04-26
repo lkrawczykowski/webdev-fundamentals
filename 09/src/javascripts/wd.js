@@ -26,11 +26,12 @@ module.exports = function () {
             return this;
         },
         navigate: function (url) {
-            let appRoot = this.appRoot;
-            let templateUrl = this.appRoutes.find(x => x.url === url).templateUrl;
-            if (templateUrl === undefined)
-                console.error(url + " is not defined");
-            else {
+            let route = this.appRoutes.find(x => x.url === url);
+            if (route === undefined) {
+                console.error(route + " is not defined");
+            } else {
+                let appRoot = this.appRoot;
+                var templateUrl = route.templateUrl;
                 fetch(templateUrl, {
                     method: 'get'
                 }).then(function (response) {

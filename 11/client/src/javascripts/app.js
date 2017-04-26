@@ -10,7 +10,7 @@ window.onload = function () {
             template: "<a href=\"\"><\/a>",
             beforeMount: function (app, element, componentData) {
                 let replacement = document.createElement("a");
-                replacement.setAttrigute("href", element.getAttribute("href"));
+                replacement.setAttribute("href", element.getAttribute("href"));
                 replacement.innerHTML = element.innerHTML;
                 replacement.addEventListener("click", function (e) {
                     e.preventDefault();
@@ -24,8 +24,8 @@ window.onload = function () {
             template: "<input class=\"awesomplete\"data-list=\"\" />",
             beforeMount: function (app, element, componentData) {
                 let replacement = document.createElement("input");
-                replacement.placeholder = element.getAttribute("placeholder");
-                replacement.type = "text";
+                replacement.setAttribute("placeholder", element.getAttribute("placeholder"));
+                replacement.setAttribute("type", "text");
                 replacement.id = "products-search";
                 replacement.class = "awesomeplete";
                 element.parentNode.replaceChild(replacement, element);
@@ -34,16 +34,10 @@ window.onload = function () {
                     var query = e.srcElement.value;
                     if (query.length > 2) {
                         var address = "http://localhost:8082/api/search?query=" + query;
-                        console.log(address);
-                        fetch(address, {
-                            method: 'get'
-                        }).then(function (response) {
-                            return response.text();
-                        }).then(function (result) {
-                            autocomplete.list = JSON.parse(result).suggestions;
-                        }).catch(function (error) {
-                            console.error(error);
-                        });
+                        fetch(address, { method: 'get' })
+                        .then(response => response.text())
+                        .then(result => autocomplete.list = JSON.parse(result).suggestions)
+                        .catch(error => console.error(error));
                     }
                 }
             }
