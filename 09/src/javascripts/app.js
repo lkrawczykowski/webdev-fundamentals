@@ -1,17 +1,24 @@
 let wd = require('./wd.js');
 
 window.onload = function () {
-    const application = wd.createRoot('app')
-        .routes([
-            { url: '/', templateUrl: 'routes/home.html' },
-            { url: '/sign-in', templateUrl: 'routes/sign-in.html' }
-        ]);
 
-    application.root('app').navigate('/');
+    console.log(wd);
+
+    var application = wd
+        .createRoot('app');
+
+    console.log(application);
+
+    application.routes([
+        { url: '/', templateUrl: 'routes/home.html' },
+        { url: '/sign-in', templateUrl: 'routes/sign-in.html' }
+    ]);
+
+    //wd.root('app').navigate('/');
 
     setTimeout(() => {
-        wd.root('app').navigate('/sign-in');
+        //wd.root('app').navigate('/sign-in');
     }, 3000);
 
-    wd.createRoot('appB');
+    //wd.createRoot('appB');
 }
