@@ -1,0 +1,45 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#player-indicator {
+    font-size: 14pt;
+}
+
+#game-wrapper {
+    font-family: Graduate;
+    font-size: 24pt;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#text-board > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#text-board > div > div {
+    margin: 25px;
+}
+
+#bottom-section {
+    font-family: Arial;
+    font-size: 12pt;
+}
+
+#bottom-section p {
+    margin: 10px;
+}
+
