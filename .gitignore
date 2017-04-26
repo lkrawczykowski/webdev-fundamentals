@@ -7,3 +7,4 @@ npm-debug.log.*
 /src/typings/tsd
 /typings
 /.vscode
+**/dist
