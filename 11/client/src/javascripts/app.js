@@ -10,7 +10,7 @@ window.onload = function () {
             template: "<a href=\"\"><\/a>",
             beforeMount: function (app, element, componentData) {
                 let replacement = document.createElement("a");
-                replacement.href = element.getAttribute("href");
+                replacement.setAttrigute("href", element.getAttribute("href"));
                 replacement.innerHTML = element.innerHTML;
                 replacement.addEventListener("click", function (e) {
                     e.preventDefault();
