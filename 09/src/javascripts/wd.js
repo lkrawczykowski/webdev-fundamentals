@@ -14,25 +14,6 @@ module.exports = function () {
         this.routes = (routes) => {
             this.appRoutes = routes;
             return this;
-<<<<<<< HEAD
-        },
-        navigate: function (url) {
-            let route = this.appRoutes.find(x => x.url === url);
-            if (route === undefined) {
-                console.error(route + " is not defined");
-            } else {
-                let appRoot = this.appRoot;
-                var templateUrl = route.templateUrl;
-                fetch(templateUrl, {
-                    method: 'get'
-                }).then(function (response) {
-                    return response.text();
-                }).then(function (result) {
-                    appRoot.innerHTML = result;
-                }).catch(function (error) {
-                    console.error(error);
-                });
-=======
         };
         this.navigate = (url) => {
             let templateUrl = this.appRoutes.find(x => x.url === url).templateUrl;
@@ -43,7 +24,6 @@ module.exports = function () {
                     .then(response => response.text())
                     .then(result => this.appRoot.innerHTML = result)
                     .catch(error => console.error(error));
->>>>>>> master
             }
             return this;
         }
