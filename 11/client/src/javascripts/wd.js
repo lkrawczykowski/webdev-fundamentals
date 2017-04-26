@@ -66,7 +66,7 @@ module.exports = function () {
             return this;
         },
         component: function (name, descriptor) {
-            this.components.push({ name: name, descriptor: descriptor });
+            this.components.push({ name, descriptor });
             return this;
         }
     };
