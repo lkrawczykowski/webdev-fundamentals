@@ -11,7 +11,7 @@ window.onload = function () {
             beforeMount: function (app, element, componentData) {
                 //console.log("beforeMount", app, element, componentData);
                 let replacement = document.createElement("a");
-                replacement.href = element.getAttribute("href");
+                replacement.setAttribute("href", element.getAttribute("href"));
                 replacement.innerHTML = element.innerHTML;
                 replacement.addEventListener("click", function (e) {
                     e.preventDefault();

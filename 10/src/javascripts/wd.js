@@ -3,8 +3,8 @@ module.exports = function () {
 
     function renderComponents(app) {
         app.components.forEach(component => {
-            let tags = document.getElementsByTagName(component.name);
-            for (var i = 0; i < tags.length;) {
+            let tags = document.querySelectorAll(component.name);
+            for (var i = 0; i < tags.length; i++) {
                 let componentData = { name: component.name, template: component.descriptor.template };
                 component.descriptor.beforeMount(app, tags[i], componentData);
             }
