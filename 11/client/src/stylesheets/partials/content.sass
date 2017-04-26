@@ -2,17 +2,12 @@
 
 #content
     margin-top: $header-height;
-
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+    flex-flow: row nowrap
     justify-content: center;
     align-items: stretch;
 
 #content-panel
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: $default-width;
+    flex: 0 1 $default-width;
 
     display: flex;
     flex-direction: row;
