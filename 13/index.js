@@ -1,26 +1,26 @@
 window.onload = function () {
-    var m = model();
-    var v = view();
-    var c = controller(m, v);
+    var gameModel = Model();
+    var gameView = View();
+    var gameController = Controller(gameModel, gameView);
     document.addEventListener("keydown", function (e) {
         if (e.code === "ArrowUp")
-            c.move_cursor(0, -1);
+            gameController.moveCursor(0, -1);
         else if (e.code === "ArrowDown")
-            c.move_cursor(0, 1);
+            gameController.moveCursor(0, 1);
         else if (e.code === "ArrowLeft")
-            c.move_cursor(-1, 0);
+            gameController.moveCursor(-1, 0);
         else if (e.code === "ArrowRight")
-            c.move_cursor(1, 0);
+            gameController.moveCursor(1, 0);
         else if (e.code === "Space")
-            c.confirm_move();
-        c.any_key();
+            gameController.confirmMove();
+        gameController.anyKey();
     });
-    document.querySelector("#reset-game-button").addEventListener("click", function(e) {
-        c.reset();
+    document.querySelector("#reset-game-button").addEventListener("click", function (e) {
+        gameController.reset();
     });
-    document.querySelector("#board-style-selection").addEventListener("change", function(e) {
-        v.renderer = e.srcElement.value;
-        v.update_view(m.field, m.cursor);
+    document.querySelector("#board-style-selection").addEventListener("change", function (e) {
+        gameView.renderer = e.srcElement.value;
+        gameView.updateView(gameModel.field, gameModel.cursor);
     })
 }
 
@@ -37,7 +37,7 @@ field:
 2 x
 */
 
-function model() {
+function Model() {
     /*
     state:
     0 o moving
@@ -50,61 +50,64 @@ function model() {
     1 o
     2 x
     */
-    
+
     return {
         field: [],
         cursor: [],
         state: 0,
-        save_game_state: function() {
-            var game_state = JSON.stringify(this);
-            window.localStorage.setItem("ttt_game_state", game_state);
+        saveGameState: function () {
+            var gameState = JSON.stringify(this);
+            window.localStorage.setItem("ttt_game_state", gameState);
         },
-        has_saved_game_state: function() {
+        hasSavedGameState: function () {
             return (window.localStorage.getItem("ttt_game_state") !== null);
         },
-        load_game_state: function() {
-            var game_state = JSON.parse(window.localStorage.getItem("ttt_game_state"));
-            if(game_state !== null) {
-                this.field = game_state.field;
-                this.cursor = game_state.cursor;
-                this.state = game_state.state;
+        loadGameState: function () {
+            var gameState = JSON.parse(window.localStorage.getItem("ttt_game_state"));
+            if (gameState !== null) {
+                this.field = gameState.field;
+                this.cursor = gameState.cursor;
+                this.state = gameState.state;
             }
         }
     }
 }
 
-function view() {
+function View() {
     return {
         renderer: "text_board",
-        update_view: function (field, cursor) {
-            document.querySelector("#text-board").style.display = (this.renderer === "text_board") ? "block": "none";
-            document.querySelector("#canvas-board").style.display = (this.renderer === "canvas_board") ? "block": "none";
-            if(this.renderer === 'text_board') {
-                var divs = document.querySelectorAll("#text-board > div > div");
-                for (var i = 0; i < divs.length; i++)
-                    divs[i].innerHTML = ["-", "O", "X"][field[i]];
-                var cursor_index = 3 * cursor[1] + cursor[0];
-                divs[cursor_index].innerHTML = "[" + divs[cursor_index].innerHTML + "]";
+        textBoardElement: document.querySelector("#text-board"),
+        canvasBoardElement: document.querySelector("#canvas-board"),
+        textBoardFields: document.querySelectorAll("#text-board > div > div"),
+        headerElement: document.querySelector("#game-header"),
+        updateView: function (field, cursor) {
+            this.textBoardElement.style.display = (this.renderer === "text_board") ? "block" : "none";
+            this.canvasBoardElement.style.display = (this.renderer === "canvas_board") ? "block" : "none";
+            if (this.renderer === 'text_board') {
+                for (var i = 0; i < this.textBoardFields.length; i++)
+                    this.textBoardFields[i].innerHTML = ["-", "O", "X"][field[i]];
+                var cursorIndex = 3 * cursor[1] + cursor[0];
+                this.textBoardFields[cursorIndex].innerHTML = "[" + this.textBoardFields[cursorIndex].innerHTML + "]";
             } else if (this.renderer === "canvas_board") {
-                let context = document.querySelector("#canvas-board").getContext('2d');
+                let context = this.canvasBoardElement.getContext('2d');
                 context.fillStyle = '#b3e5fc';
                 context.fillRect(0, 0, 400, 300);
                 context.strokeStyle = '#5c6bc0';
                 context.lineWidth = 3;
-                for(var i = 0; i < 3; i++) {
-                     for(var j = 0; j < 3; j++) {
-                        var index = j*3 + i;
+                for (var i = 0; i < 3; i++) {
+                    for (var j = 0; j < 3; j++) {
+                        var index = j * 3 + i;
                         if (field[index] === 1) {
-                            place_o(50 + 100*i,50+100*j);
+                            placeO(50 + 100 * i, 50 + 100 * j);
                         } else if (field[index] === 2) {
-                            place_x(50 + 100*i,50+100*j);
+                            placeX(50 + 100 * i, 50 + 100 * j);
                         }
-                     }
+                    }
                 }
 
-                place_rect(50 + 100*cursor[0], 50 + 100*cursor[1]);
+                placeRect(50 + 100 * cursor[0], 50 + 100 * cursor[1]);
 
-                function place_x(x, y) {
+                function placeX(x, y) {
                     var size = 15;
 
                     context.beginPath();
@@ -120,30 +123,30 @@ function view() {
                     context.stroke();
                 }
 
-                function place_o(x, y) {
+                function placeO(x, y) {
                     context.beginPath();
-                    context.arc(x, y, 20, 0, Math.PI*2, true); 
+                    context.arc(x, y, 20, 0, Math.PI * 2, true);
                     context.closePath();
                     context.stroke();
                 }
 
-                function place_rect(x, y) {
+                function placeRect(x, y) {
                     var size = 25;
-                    context.strokeRect(x - size, y - size, 2*size, 2*size);
+                    context.strokeRect(x - size, y - size, 2 * size, 2 * size);
                 }
             }
         },
-        update_header: function (header_text) {
-            document.querySelector("#game-header").innerHTML = header_text;
+        updateHeader: function (headerText) {
+            this.headerElement.innerHTML = headerText;
         }
     }
 }
 
-function controller(model, view) {
+function Controller(model, view) {
     var controller = {
         model: model,
         view: view,
-        move_cursor: function (x, y) {
+        moveCursor: function (x, y) {
             if (model.state === 0 || model.state === 1) {
                 model.cursor[0] += x;
                 if (model.cursor[0] < 0)
@@ -155,35 +158,36 @@ function controller(model, view) {
                     model.cursor[1] += 3;
                 else if (model.cursor[1] > 2)
                     model.cursor[1] -= 3;
-                view.update_view(model.field, model.cursor);
-                model.save_game_state();
+                view.updateView(model.field, model.cursor);
+                model.saveGameState();
             }
         },
-        confirm_move: function () {
+        confirmMove: function () {
             if (model.state === 0 || model.state === 1) {
-                var cursor_index = 3 * model.cursor[1] + model.cursor[0];
-                if (model.field[cursor_index] === 0) {
-                    var pending_state = model.state === 0 ? 1 : 0;
-                    var pending_value = model.state === 0 ? 1 : 2;
+                var cursorIndex = 3 * model.cursor[1] + model.cursor[0];
+                if (model.field[cursorIndex] === 0) {
+                    var pendingState = model.state === 0 ? 1 : 0;
+                    var pendingValue = model.state === 0 ? 1 : 2;
                     model.state = 2;
                     setTimeout(function () {
-                        model.field[cursor_index] = pending_value;
-                        var result = game_result(model.field);
+                        model.field[cursorIndex] = pendingValue;
+                        var result = gameResult(model.field);
                         if (result === 1) {
-                            view.update_header("Player O won!");
+                            headerText = "Player O won!";
                             model.state = 3;
                         } else if (result === 2) {
-                            view.update_header("Player X won!");
+                            headerText = "Player X won!";
                             model.state = 3;
-                        } else if (!some(model.field, is_field_empty)) {
-                            view.update_header("Draw");
+                        } else if (!model.field.some(x => isFieldEmpty(x))) {
+                            headerText = "Draw";
                             model.state = 3;
                         } else {
-                            view.update_header("Player " + (pending_state === 0 ? "O" : "X") + " moves");
-                            model.state = pending_state;
+                            headerText = "Player " + (pendingState === 0 ? "O" : "X") + " moves";
+                            model.state = pendingState;
                         }
-                        model.save_game_state();
-                        view.update_view(model.field, model.cursor);
+                        view.updateHeader(headerText);
+                        model.saveGameState();
+                        view.updateView(model.field, model.cursor);
                     }, 300);
                 }
             }
@@ -192,39 +196,32 @@ function controller(model, view) {
             this.model.field = [0, 0, 0, 0, 0, 0, 0, 0, 0];
             this.model.cursor = [1, 1];
             this.model.state = 0;
-            this.model.save_game_state();
-            this.view.update_view(model.field, model.cursor);
-            this.view.update_header("Player " + (model.state === 0 ? "O" : "X") + " starts game");
+            this.model.saveGameState();
+            this.view.updateView(model.field, model.cursor);
+            this.view.updateHeader("Player " + (model.state === 0 ? "O" : "X") + " starts game");
         },
-        any_key: function () {
+        anyKey: function () {
             if (model.state === 3) {
                 controller.reset();
-                model.save_game_state();
+                model.saveGameState();
             }
         }
     }
-    if(model.has_saved_game_state()) {
-        model.load_game_state();
-        view.update_view(controller.model.field, controller.model.cursor);
+    if (model.hasSavedGameState()) {
+        model.loadGameState();
+        view.updateView(controller.model.field, controller.model.cursor);
     }
     else
         controller.reset();
     return controller;
 }
 
-function is_field_empty(v) {
+function isFieldEmpty(v) {
     return v === 0;
 }
 
-function some(a1, f1) {
-    for (var i = 0; i < a1.length; i++)
-        if (f1(a1[i]))
-            return true;
-    return false;
-}
-
-function game_result(field) {
-    var possible_lines = [
+function gameResult(field) {
+    var possibleLines = [
         [1, 0, 0, 1, 0, 0, 1, 0, 0],
         [0, 1, 0, 0, 1, 0, 0, 1, 0],
         [0, 0, 1, 0, 0, 1, 0, 0, 1],
@@ -234,18 +231,18 @@ function game_result(field) {
         [1, 0, 0, 0, 1, 0, 0, 0, 1],
         [0, 0, 1, 0, 1, 0, 1, 0, 0],
     ];
-    for (var i = 0; i < possible_lines.length; i++) {
-        if (is_complete(possible_lines[i], field, 1))
+    for (var i = 0; i < possibleLines.length; i++) {
+        if (isComplete(possibleLines[i], field, 1))
             return 1;
-        else if (is_complete(possible_lines[i], field, 2))
+        else if (isComplete(possibleLines[i], field, 2))
             return 2;
     }
     return 0;
 }
 
-function is_complete(line_mask, line, player) {
-    for (var i = 0; i < line_mask.length; i++)
-        if (line_mask[i] === 1 && line[i] !== player)
+function isComplete(lineMask, line, player) {
+    for (var i = 0; i < lineMask.length; i++)
+        if (lineMask[i] === 1 && line[i] !== player)
             return false;
     return true;
 }
